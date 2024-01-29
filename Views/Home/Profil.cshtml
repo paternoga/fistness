@@ -1,0 +1,157 @@
+﻿@{
+    Layout = null; // This line indicates that this view doesn't use a layout page.
+}
+@if (User.IsInRole("Admin"))
+{
+@model dynamic
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Admin Panel</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/stylepanel.css" />
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark admin-navbar">
+            <a class="logo" href="#">
+                <img src="~/lib/images/logogit.png" alt="logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto navbar">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/">Strona główna</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="GrafikUiA">GRAFIK</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Magazyn</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href=" ">LISTA PROFILI</a>
+                    </li>
+                    <li class="nav-item">
+                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            <button class="button2" type="submit" class=" nav-link btn btn-link text-dark">WYLOGUJ SIĘ</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="admin-card">
+            <h2>LISTA UŻYTKOWNIKÓW</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Username</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Karnet</th>
+                        <th scope="col">Data ważności</th>
+                        <th scope="col">Akcje</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>@user.UserName</td>
+                            <td>@user.Email</td>
+                            <td>@user.KarnetInfo</td>
+                            <td>@user.DataWaznosci</td> <!-- Dodana kolumna z datą ważności -->
+                            <td>
+                                <button type="button" class="btn btn-danger" onclick="usunProfil('@user.UserName')">Usuń</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger" onclick="usunKarnet('@user.UserName')">Usuń Karnet</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <script>
+            function usunProfil(username) {
+                console.log('Przycisk został kliknięty. Username: ', username);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Home/UsunProfil',
+                    data: { username: username },
+                    headers: { 'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val() },
+                    success: function (response) {
+                        if (response.success) {
+                            console.log('Użytkownik został pomyślnie usunięty.');
+
+                            // Tutaj możesz obsłużyć odpowiedź z serwera, np. odświeżyć listę karnetów
+                            location.reload();
+
+                        } else {
+                            console.error('Błąd podczas usuwania użytkownika: ', response.message);
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Wystąpił błąd podczas usuwania użytkownika: ', error);
+                    }
+                });
+            }
+            function usunKarnet(username) {
+                console.log('Przycisk został kliknięty. Username: ', username);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Home/UsunKarnet',
+                    data: { username: username },
+                    headers: { 'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val() },
+                    success: function (response) {
+                        if (response.success) {
+                            console.log('Karnet został pomyślnie usunięty.');
+
+                            // Tutaj możesz obsłużyć odpowiedź z serwera, np. odświeżyć listę użytkowników
+                            location.reload();
+
+                        } else {
+                            console.error('Błąd podczas usuwania karnetu: ', response.message);
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Wystąpił błąd podczas usuwania karnetu: ', error);
+                    }
+                });
+            }
+
+            function updateTable(users) {
+                var tbody = $('#userTable tbody');
+                tbody.empty();
+
+                users.forEach(function (user) {
+                    tbody.append(
+                        '<tr>' +
+                        '<td>' + user.userName + '</td>' +
+                        '<td>' + user.email + '</td>' +
+                        '<td>' + user.karnetInfo + '</td>' +
+                        '<td>' + user.dataWaznosci + '</td>' +
+                        '<td>' +
+                        '<button type="button" class="btn btn-danger" onclick="usunProfil(\'' + user.userName + '\')">Usuń użytkownika</button>' +
+                        '</td>' +
+                        '<td>' +
+                        '<button type="button" class="btn btn-warning" onclick="usunKarnet(\'' + user.userName + '\')">Usuń karnet</button>' +
+                        '</td>' +
+                        '</tr>'
+                    );
+                });
+            }
+        </script>
+    </body>
+    </html>
+}

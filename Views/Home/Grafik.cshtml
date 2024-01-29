@@ -1,0 +1,105 @@
+﻿@{
+    ViewData["Title"] = "Grafik";
+}
+
+
+
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FISTNESS</title>
+    <link rel="stylesheet" href="~/css/style.css">
+    <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'>
+    <style>
+        #calendar {
+            width: 90%;
+            height: 80%; 
+            margin: auto;
+            border-radius: 20px;
+            padding: 20px;
+            box-sizing: border-box;
+            color: white;
+        }
+
+
+    </style>
+
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+    <script src='https://code.jquery.com/jquery-3.6.4.min.js'></script>
+    <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js'></script>
+    <style>
+        #calendar a {
+            color: white !important;
+        }
+
+        .fc-day-today {
+            background: radial-gradient(circle, rgba(0,0,0,0.5) 5%, rgba(87,12,12,0.5) 50%, rgba(0,0,0,0.5) 94%);
+        }
+
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                locale: 'pl',
+                buttonText: {
+                    today: 'Dziś',
+                    month: 'Miesiąc',
+                    week: 'Tydzień',
+                    day: 'Dzień',
+                    list: 'Lista'
+                },
+
+                eventColor: 'red',
+                eventTextColor: 'black',
+                eventBackgroundColor: 'red',
+                eventBorderColor: 'red',
+                selectable: true,
+                events: '/Calendar/GetEventsAdmin',
+                locale: 'pl',
+                eventTimeFormat: {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    omitZeroMinute: false,
+                    meridiem: false
+                },
+                select: function (info) { 
+                },
+
+            });
+
+            calendar.render();
+        });
+    </script>
+</head>
+
+<body>
+    <div class="banner" style="background-image: linear-gradient(rgba(37, 21, 21, 0.75), rgba(0, 0, 0, 0.75)), url('/css/tlo.jpg');">
+        <div class="navbar">
+            <a href="@Url.Action("Index", "Home")" class="logo">
+                <img src="~/lib/images/logo.png" class="logo">
+            </a>
+            <div class="nav-container">
+                <ul class="nav-list">
+                    <li><a href="@Url.Action("Index", "Home")#klub">KLUB</a></li>
+                    <li><a href="@Url.Action("Index", "Home")#karnet">KARNET</a></li>
+                    <li><a href="@Url.Action("Index", "Home")#kontakt">KONTAKT</a></li>
+                    <li><a href="@Url.Action("Grafik", "Home")">GRAFIK</a></li>
+                </ul>
+            </div>
+            <button class="button2" type="button" onclick="window.location.href='/Identity/Account/Login'">ZALOGUJ SIĘ</button>
+        </div>
+
+        <div id='calendar'></div>
+    </div>
+</body>
+
+</html>

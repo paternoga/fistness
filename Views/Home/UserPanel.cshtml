@@ -1,0 +1,233 @@
+﻿@{
+    Layout = null; // This line indicates that this view doesn't use a layout page.
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Panel użytkownika</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/userpanel.css" />
+    <script src="https://kit.fontawesome.com/af00605393.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark admin-navbar">
+        <a class="logo" href="#">
+            <img src="~/lib/images/logogit.png" alt="logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto navbar">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Strona główna</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Home/GrafikUiA">GRAFIK</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Home/Karnet">ZAKUPY</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Identity/Account/Manage/Index">PROFIL</a>
+                </li>
+                <li class="nav-item">
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" asp-antiforgery="true">
+                        <button class="button2" type="submit" class=" nav-link btn btn-link text-dark">WYLOGUJ SIĘ</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="panel">
+        <div class="info-box user-count">
+            <div class="icon-container">
+                <i class="fa-solid fa-ticket"></i>
+            </div>
+            <h2>Twój karnet</h2>
+            <p><p id="wynikSprawdzeniaKarnetu"></p>
+
+            <!-- Your script to fetch and display subscription information -->
+            <script>
+                // Function to fetch and display subscription information
+                async function sprawdzKarnet() {
+                    // Pobierz datę ważności karnetu za pomocą żądania AJAX
+                    let response = await fetch("/Karnet/DataWaznosciKarnetu");
+                    let dataWaznosci = await response.json();
+
+                    // Wyświetl wynik na stronie
+                    let wynikSprawdzeniaKarnetu = document.getElementById("wynikSprawdzeniaKarnetu");
+                    wynikSprawdzeniaKarnetu.innerHTML = "";
+
+                    if (dataWaznosci) {
+                        wynikSprawdzeniaKarnetu.innerHTML = "Twój karnet jest ważny do: " + new Date(dataWaznosci).toLocaleDateString();
+                    } else {
+                        wynikSprawdzeniaKarnetu.innerHTML = "Nie masz aktywnego karnetu.";
+                    }
+                }
+
+                // Call the function when the page loads
+                document.addEventListener("DOMContentLoaded", sprawdzKarnet);
+            </script></p>
+        </div>
+
+        <div class="info-box gym-people">
+            <div class="icon-container">
+                <i class="fas fa-dumbbell fa-2x"></i>
+            </div>
+            <h2>Osoby na siłowni</h2>
+            <p>
+                <div>
+                    <p>Aktualna liczba osób na siłowni: <span>@ViewBag.VisitorCount</span></p>
+                </div>
+            </p>
+        </div>
+
+        <div class="info-box product-count">
+            <div class="icon-container">
+                <i class="fas fa-shopping-basket fa-2x"></i>
+            </div>
+            <h2>Ilość produktów</h2>
+            <p>Ilość produktów (odżywki): 0</p>
+        </div>
+
+        <div class="info-box weather">
+            <div class="icon-container">
+                <i class="fas fa-sun fa-2x"></i>
+            </div>
+            <h2>Aktualna pogoda</h2>
+            <p>
+                <div id="weather-info">
+                    <p id="temperature"></p>
+                </div>
+            </p>
+        </div>
+
+        <div class="info-box unique-visitors">
+            <div class="icon-container">
+                <i class="fa-solid fa-users"></i>
+            </div>
+            <h2>Użytkownicy</h2>
+            <p>
+                <div>
+                    <p>Liczba zarejestrowanych użytkowników: @ViewBag.RegisteredUsersCount</p>
+                </div>
+            </p>
+        </div>
+    </div>
+    <h1 class="welcome">Witaj @ViewBag.UserName! Dzisiaj jest @ViewBag.CurrentDate.ToString("d MMMM"). <span id="dress-advice"></span> bo jest <span id="temperature2">Aktualna temperatura: brak danych</span>.</h1>
+
+
+    <div class="container-fluid admin-content">
+        <div class="row">
+            <div class="col-lg-3">
+                <!-- Sidebar/Menu -->
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action">Lorem ipsum dolor sit amet</a>
+                    <a href="#" class="list-group-item list-group-item-action">Consectetur adipiscing elit</a>
+                    <a href="#" class="list-group-item list-group-item-action">Ed do eiusmod tempor incididunte</a>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <!-- Main Content -->
+                <!-- Main Content -->
+                <div class="admin-card">
+                    <h2>Twoje Zajęcia</h2>
+                    <div id="listaZajec"></div>
+
+                    <!-- Skrypt do pobierania i wyświetlania zapisanych zajęć -->
+                    <script>
+                        // Funkcja do pobierania i wyświetlania informacji o zapisanych zajęciach
+                        async function pobierzZapisaneZajecia() {
+                            // Pobierz zapisane zajęcia za pomocą żądania AJAX
+                            let response = await fetch("/Calendar/MojeZajecia");
+                            let zajecia = await response.json();
+
+                            // Wyświetl wynik na stronie
+                            let listaZajec = document.getElementById("listaZajec");
+                            listaZajec.innerHTML = "";
+
+                            if (zajecia.length > 0) {
+                                // Jeśli użytkownik jest zapisany na zajęcia, wyświetl je w tabeli
+                                let tabela = '<table class="table table-striped">' +
+                                    '<thead>' +
+                                    '<tr>' +
+                                    '<th scope="col">Tytuł</th>' +
+                                    '<th scope="col">Start</th>' +
+                                    '<th scope="col">Koniec</th>' +
+                                    '</tr>' +
+                                    '</thead>' +
+                                    '<tbody>';
+
+                                zajecia.forEach(function (zajecie) {
+                                    tabela += '<tr>' +
+                                        '<td>' + zajecie.title + '</td>' +
+                                        '<td>' + new Date(zajecie.start).toLocaleString() + '</td>' +
+                                        '<td>' + new Date(zajecie.end).toLocaleString() + '</td>' +
+                                        '</tr>';
+                                });
+
+                                tabela += '</tbody></table>';
+                                listaZajec.innerHTML = tabela;
+                            } else {
+                                // Jeśli użytkownik nie jest zapisany na żadne zajęcia, wyświetl komunikat
+                                listaZajec.innerHTML = "<p>Nie jesteś zapisany na żadne zajęcia.</p>";
+                            }
+                        }
+
+                        // Wywołaj funkcję przy ładowaniu strony
+                        document.addEventListener("DOMContentLoaded", pobierzZapisaneZajecia);
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        const apiKey = 'be84c952ab6efcfda62fcff33a216737';
+        const latitude = 51.7592;
+        const longitude = 19.4550;
+        const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
+
+        async function getWeather() {
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                if (data.main && data.main.temp) {
+                    const temperature = data.main.temp;
+                    document.getElementById('temperature').textContent = `${temperature.toFixed(0)}°C`;
+                    document.getElementById('temperature2').textContent = `${temperature.toFixed(0)}°C`;
+
+                    const dressAdvice = document.getElementById('dress-advice');
+                    if (temperature <= 15) {
+                        dressAdvice.textContent = 'Ubierz się ciepło';
+                    } else {
+                        dressAdvice.textContent = 'Nie musisz się ubierać ciepło.';
+                    }
+                } else {
+                    throw new Error('Błąd podczas pobierania danych pogodowych.');
+                }
+            } catch (error) {
+                console.error('Błąd:', error.message);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', getWeather);
+    </script>
+
+
+
+
+    <!-- Bootstrap JavaScript files -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

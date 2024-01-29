@@ -1,0 +1,107 @@
+﻿@model DateTime
+@{
+    Layout = null; // This line indicates that this view doesn't use a layout page.
+}
+@if (User.IsInRole("User"))
+{
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Admin Panel</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/stylepanelgit.css" /> <!-- Assuming your style.css is in the wwwroot/css folder -->
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark admin-navbar">
+            <a class="logo" href="#">
+                <img src="~/lib/images/logogit.png" alt="logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto navbar">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/">Strona główna</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="GrafikUiA">GRAFIK</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Karnet">ZAKUPY</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Identity/Account/Manage/Index">PROFIL</a>
+                    </li>
+                    <li class="nav-item">
+                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            <button class="button2" type="submit" class=" nav-link btn btn-link text-dark">WYLOGUJ SIĘ</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container-fluid admin-content">
+            <div class="full-width-panel">
+                <div class="info-box unique-visitors">
+                    <div class="icon-container">
+                    </div>
+                    <img src="~/lib/images/student.png" alt="logo">
+                    <h2>KARNET STUDENT</h2>
+                    <p>
+                        Dla uczniów i studentów do 26. roku życia z ważną legitymacją <br />
+
+                        Umowa na czas nieokreślony z miesięcznym okresem wypowiedzenia<br />
+
+                        2x tygodniowe bezpłatne zamrożenie karnetu<br />
+
+                        14-dniowa gwarancja
+                    </p>
+                    @using (Html.BeginForm("KupKarnet", "Karnet", FormMethod.Post))
+                    {
+                        <input type="hidden" name="typKarnetu" value="student" />
+                        <button class="button2" type="submit" class="nav-link btn btn-link text-dark">Kup teraz!</button>
+                    }
+                </div>
+
+                <div class="info-box user-count">
+                    <div class="icon-container">
+                    </div>
+                    <img src="~/lib/images/standard.png" alt="logo">
+                    <h2>KARNET STANDARD</h2>
+                    <p>
+                        Umowa na czas nieokreślony z miesięcznym okresem wypowiedzenia<br />
+
+                        2x tygodniowe bezpłatne zamrożenie karnetu<br />
+
+                        14-dniowa gwarancja
+                    </p>
+                    @using (Html.BeginForm("KupKarnet", "Karnet", FormMethod.Post))
+                    {
+                        <input type="hidden" name="typKarnetu" value="standard" />
+                        <button class="button2" type="submit" class="nav-link btn btn-link text-dark">Kup teraz!</button>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Bootstrap JavaScript files -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </body>
+    </html>
+
+
+
+}
+
+
+
+
+
+

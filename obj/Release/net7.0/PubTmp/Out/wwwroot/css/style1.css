@@ -1,0 +1,116 @@
+﻿body {
+    background: url('/lib/images/tlo.jpg') no-repeat center center fixed;
+    background-size: cover;
+    backdrop-filter: blur(5px); /* Możesz dostosować wartość rozmycia według potrzeb */
+    -webkit-backdrop-filter: blur(5px);
+    width: 100vw; /* Szerokość całego widoku */
+    height: 100vh; /* Wysokość całego widoku */
+    margin: 0; /* Usuń domyślne marginesy body */
+    overflow: hidden; /* Ukryj przewijanie */
+}
+
+/* Inne style dla treści strony */
+
+.text:not(img) {
+    position: absolute;
+    color: white;
+    left: 50%; /* Zmieniono wartość na 50% dla centralnego umieszczenia */
+    top: 50%;
+    transform: translateX(-50%); /* Centrowanie poziome na podstawie szerokości */
+}
+
+.Container:not(img) {
+    position: relative;
+    height: auto;
+    width: 100%;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    transform: translateY(-50%); /* Centrowanie pionowe na podstawie wysokości */
+    margin: auto;
+}
+
+.Transparent-image {
+    opacity: 0.8;
+    width: 400px;
+    height: 850px;
+    top: auto;
+    margin-left: auto; /* Usunięto left, aby używać marginesów do odstępów */
+    margin-right: auto; /* Usunięto left, aby używać marginesów do odstępów */
+    transform: translateY(50%);
+}
+
+.login, .register {
+    margin-left: 25px;
+    background-color: #940d0d; /* Kolor tła */
+    color: white; /* Kolor tekstu */
+    padding: 10px 20px; /* Wewnętrzny odstęp */
+    border: none; /* Brak obramowania */
+    border-radius: 5px; /* Zaokrąglenie rogów */
+    cursor: pointer; /* Zmień kursor na wskaźnik na najechanie */
+    width: 250px;
+}
+
+
+
+.inserts {
+    left: 100%;
+}
+
+input[class="Email"],
+input[class="Password"],
+input[class="ConfirmPassword"] {
+    width: 100%; /* Szerokość 100% */
+    padding: 10px; /* Wewnętrzny odstęp */
+    margin: 5px 0; /* Marginesy górny i dolny */
+
+
+    border: 1px solid #ccc; /* Obramowanie */
+    border-radius: 4px; /* Zaokrąglenie rogów */
+}
+
+  
+
+hr {
+    border: none; /* Usuwa domyślne obramowanie */
+    height: 1px; /* Grubość linii */
+    background-color: #ccc; /* Kolor linii */
+    margin: 20px 0; /* Marginesy górny i dolny */
+}
+
+.logo {
+    width: 300px;
+    height: 300px;
+    top: 0;
+    left: 0;
+}
+
+input {
+    width: 100%; /* Szerokość 100% */
+    padding: 10px; /* Wewnętrzny odstęp */
+    margin: 5px 0; /* Marginesy górny i dolny */
+
+
+    border: 1px solid #ccc; /* Obramowanie */
+    border-radius: 4px;
+    
+}
+
+.text-danger {
+    --bs-text-opacity: 1;
+    color: rgba(var(--bs-danger-rgb), var(--bs-text-opacity)) !important;
+    font-size: 10px;
+    overflow-wrap: break-word;
+}
+a {
+    color: gray;
+}
+
+    /* Dodatkowe style, np. zmiana koloru po najechaniu myszką */
+    a:hover {
+        color: darkgray;
+    }
+
+
+

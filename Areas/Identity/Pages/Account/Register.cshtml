@@ -1,0 +1,67 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Rejestracja";
+    Layout = null; // This line indicates that this view doesn't use a layout page.
+}
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/css/style1.css">
+
+<body>
+
+    <div class="Container">
+        <img class="Transparent-image" src="/lib/images/blur1.png" alt="transparent">
+        <div class="text">
+            <a href="@Url.Action("Index", "Home")" class="logo">
+                <img src="/lib/images/logo.png" class="logo">
+            </a>
+            <div class="inserts">
+                <h2 style="white-space: nowrap;">Stwórz nowe konto</h2>
+
+                <section>
+                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        <hr />
+                        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                        <div class="form-floating mb-3">
+                            <p>Email: <span asp-validation-for="Input.Email" class="text-danger"></span></p>
+                            <input asp-for="Input.Email" class="Email" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+
+
+
+                        </div>
+                        <div class="form-floating mb-3">
+                            <p>Hasło: <span asp-validation-for="Input.Password" class="text-danger"></span></p>
+                            <input asp-for="Input.Password" class="Password" autocomplete="new-password" aria-required="true" placeholder="password" />
+
+
+
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <p style="white-space: nowrap;">Powtórz hasło: <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span></p>
+                            <input asp-for="Input.ConfirmPassword" class="ConfirmPassword" autocomplete="new-password" aria-required="true" placeholder="password" />
+
+
+
+                        </div>
+                        <button id="registerSubmit" type="submit" class="login">Zarejestruj</button>
+
+                        <div style="display: flex; justify-content: center; align-items: center; height: 100px;">
+                            <p>
+                                <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Masz konto? Zaloguj się</a>
+                            </p>
+                        </div>
+
+                    </form>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,176 @@
+﻿@{
+    string section = ViewBag.Section;
+}
+
+
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FISTNESS</title>
+    <link rel="stylesheet" href="~/css/style.css">
+</head>
+<body>
+    <div class="banner">
+        <div class="navbar">
+            <a href="@Url.Action("Index", "Home")" class="logo">
+                <img src="lib/images/logo.png" class="logo">
+            </a>
+            <div class="nav-container">
+                <ul class="nav-list">
+                    <li><a href="#klub" class="nav-link">KLUB</a></li>
+                    <li><a href="#karnet" class="nav-link">KARNET</a></li>
+                    <li><a href="#kontakt" class="nav-link">KONTAKT</a></li>
+                    <li>@Html.ActionLink("GRAFIK", "Grafik", "Home")</li>
+
+
+                </ul>
+
+            </div>
+            <button class="button2" type="button" onclick="window.location.href='/Identity/Account/Login'">ZALOGUJ SIĘ</button>
+        </div>
+    </div>
+    <section class="home">
+        <div class="content">
+            <h1>"Twój los jest w twoich rękach, przyszłość w twoim uścisku."</h1>
+            <p>DOŁĄCZ DO NAS BY ODKRYĆ SWÓJ PEŁEN POTENCJAŁ. </p>
+            <div>
+                <button class="button3" onclick="window.location.href='/Identity/Account/Login'" type="button">WYPRÓBUJ KARNET</button>
+            </div>
+        </div>
+    </section>
+
+
+
+    <section id="klub" class="klub">
+        <div class="klubcontent">
+        <h1>ZNAJDZIESZ NAS TUTAJ</h1>
+        <p>Polskiej Organizacji Wojskowej 3/5, 90-255 Łódź</p>
+        <div class="choose__triangle"></div>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d617.1788690240496!2d19.463091331739438!3d51.
+          77480846265782!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471bcb27d95ca219%3A0x7a09bc332d4a8d73!2sWydzia%C5%82%20Ekonomiczno-Socjologiczny
+          %20Uniwersytetu%20%C5%81%C3%B3dzkiego!5e0!3m2!1spl!2spl!4v1703032276059!5m2!1spl!2spl"
+                allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <p>Jesteśmy otwarci 24 godziny na dobę, w soboty, niedziele oraz święta!</p>
+        <h1>MY W LICZBACH</h1>
+        </div>
+        <div class="statistics">
+            <div class="statistic-item">
+                <h1 class="statistic-number">@ViewBag.RegisteredUsersCount</h1>
+                <p class="statistic-number2">użytkowników</p>
+            </div>
+            <div class="statistic-item">
+                <h1 class="statistic-number">100</h1>
+                <p class="statistic-number2">maszyn</p>
+            </div>
+            <div class="statistic-item">
+                <h1 class="statistic-number">15</h1>
+                <p class="statistic-number2">trenerów</p>
+            </div>
+            <div class="statistic-item">
+                <h1 class="statistic-number"><span>@ViewBag.VisitorCount</span></h1>
+                <p class="statistic-number2">Osób obecnie na siłowni</p>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="karnet" class="karnet">
+        <div class="karnet-container">
+            <div class="karnet-item">
+                <img src="lib/images/standard.png" alt="Standard Karnet">
+                <h1 class="karnet-h1">KARNET STANDARD</h1>
+                <h2 class="karnet-h2">140,00zł</h2>
+                <p class="karnet-h3">na miesiąc</p>
+                <button class="button2" onclick="window.location.href='/Identity/Account/Login'" type="button">KUP TERAZ</button>
+                <div class="custom-list">
+                    <p class="custom-paragraph">Umowa na czas nieokreślony z miesięcznym okresem wypowiedzenia</p>
+                    <p class="custom-paragraph">2x tygodniowe bezpłatne zamrożenie karnetu</p>
+                    <p class="custom-paragraph">14-dniowa gwarancja</p>
+                </div>
+            </div>
+
+            <div class="karnet-item">
+                <img src="lib/images/student.png" alt="Student Karnet">
+                <h1 class="karnet-h1">KARNET STUDENT</h1>
+                <h2 class="karnet-h2">100,00zł</h2>
+                <p class="karnet-h3">na miesiąc</p>
+                <button class="button2" onclick="window.location.href='/Identity/Account/Login'" type="button">KUP TERAZ</button>
+                <div class="custom-list">
+                    <p class="custom-paragraph">Dla uczniów i studentów do 26. roku życia z ważną legitymacją</p>
+                    <p class="custom-paragraph">Umowa na czas nieokreślony z miesięcznym okresem wypowiedzenia</p>
+                    <p class="custom-paragraph">2x tygodniowe bezpłatne zamrożenie karnetu</p>
+                    <p class="custom-paragraph">14-dniowa gwarancja</p>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section id="kontakt" class="kontakt">
+        <h1 class="contact-h1">KONTAKT</h1>
+        <div class="contact-container">
+            <div class="contact-info">
+                <div class="contact-column">
+                    <h2 class="karnet-h3">FISTNESS ŁÓDŹ</h2>
+                    <p class="karnet-h3">Polskiej Organizacji Wojskowej 3/5, 90-255 Łódź</p>
+                </div>
+                <div class="contact-column">
+                    <h2 class="karnet-h3">Recepcja</h2>
+                    <p class="karnet-h3">777 777 777</p>
+                </div>
+                <div class="contact-column">
+                    <p>© Copyright 2023 FISTNESS</p>
+                </div>
+            </div>
+            <div class="contact-form">
+                <form action="https://formspree.io/f/xeqyqjyo" method="POST">
+                    <h1 class="karnet-h1">Zostaw swoje dane, a skontaktujemy się z Tobą!</h1>
+                    <label> Twój mail: <input type="email" name="email"></label>
+                    <label> Twoja wiadomość: <textarea name="message"></textarea></label>
+                    <button class="button2" type="submit">Wyślij wiadomość</button>
+                </form>
+            </div>
+        </div>
+        <div>
+            <ul>
+                <li><a href="@Url.Action("Index", "Home")" class="logo">
+            <img src="lib/images/logo.png" class="logo"></a></li>
+            </ul>
+        </div>
+    </section>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<!-- Skrypt płynnego przewijania -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var links = document.querySelectorAll('.nav-link');
+
+            links.forEach(function (link) {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    var targetId = this.getAttribute('href').substring(1);
+                    var targetElement = document.getElementById(targetId);
+
+                    if (targetElement) {
+                        var offsetTop = targetElement.offsetTop;
+
+                        window.scrollTo({
+                            top: offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+
+</html>

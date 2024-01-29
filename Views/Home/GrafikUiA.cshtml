@@ -1,0 +1,408 @@
+﻿@{
+    ViewData["Title"] = "Grafik";
+}
+@model FISTNESS.Models.Events
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@if (User.IsInRole("Admin"))
+{
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Admin Panel</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/stylepanel.css" /> <!-- Assuming your style.css is in the wwwroot/css folder -->
+        <style>
+            #calendar {
+                width: 80%;
+                height: 50%;
+                margin: auto;
+                border-radius: 20px;
+                padding: 20px;
+                box-sizing: border-box;
+                color: white;
+            }
+
+        </style>
+
+        <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+        <script src='https://code.jquery.com/jquery-3.6.4.min.js'></script>
+        <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js'></script>
+        <style>
+            #calendar a {
+                color: white !important;
+            }
+
+            .fc-day-today {
+                background: linear-gradient(to top left, #33ccff 0%, #ff99cc 100%);
+            }
+
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark admin-navbar">
+            <a class="logo" href="#">
+                <img src="~/lib/images/logogit.png" alt="logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto navbar">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/">Strona główna</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="">GRAFIK</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Magazyn</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Profil">LISTA PROFILI</a>
+                    </li>
+                    <li class="nav-item">
+                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            <button class="button2" type="submit" class=" nav-link btn btn-link text-dark">WYLOGUJ SIĘ</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+
+
+        <!-- Bootstrap JavaScript files -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </body>
+
+    <head>
+        <meta charset='utf-8' />
+        <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'>
+        <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+        <script src='https://code.jquery.com/jquery-3.6.4.min.js'></script>
+        <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js'></script>
+        <style>
+            #calendar a {
+                color: black !important; /* Ustaw kolor tekstu w linku na czarny */
+            }
+
+            .fc-day-today {
+                background: linear-gradient(to top left, #33ccff 0%, #ff99cc 100%);
+            }
+        </style>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var calendarEl = document.getElementById('calendar');
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    headerToolbar: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    },
+                    eventColor: 'red',
+                    eventTextColor: 'black',
+                    eventBackgroundColor: 'red',
+                    eventBorderColor: 'red',
+                    selectable: true,
+                    events: '/Calendar/GetEventsAdmin',
+                    locale: 'pl', // Ustaw lokalizację na polską
+                    eventTimeFormat: {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        omitZeroMinute: false,
+                        meridiem: false
+                    },
+                    select: function (info) {
+                        // Wywołaj modal
+                        $('#eventModal').modal('show');
+
+                        // Ustaw datę początkową i końcową na wybraną datę
+                        $('#startDatePicker').val(info.startStr);
+                        $('#endDatePicker').val(info.endStr);
+
+                        // Ustaw zdarzenie dla przycisku "Zapisz" tylko raz
+                        $('#saveEventBtn').off('click').on('click', function () {
+                            var title = $('#eventTitle').val();
+                            var startDate = $('#startDatePicker').val();
+                            var endDate = $('#endDatePicker').val();
+
+                            $.ajax({
+                                url: '/Calendar/AddEvent',
+                                type: 'POST',
+                                dataType: 'json',
+                                data: {
+                                    Title: title,
+                                    Start: startDate,
+                                    End: endDate
+                                },
+                                success: function (response) {
+                                    if (response.success) {
+                                        // Dodaj nowe wydarzenie do kalendarza z uzyskanym identyfikatorem
+                                        calendar.addEvent({
+                                            id: response.id,
+                                            title: title,
+                                            start: startDate,
+                                            end: endDate,
+                                            backgroundColor: 'red', // Ustaw kolor tła na czerwony
+                                            borderColor: 'red', // Ustaw kolor obramowania na czerwony
+                                            textColor: 'black' // Ustaw kolor tekstu na czarny
+                                        });
+
+                                        // Ukryj modal
+                                        $('#eventModal').modal('hide');
+                                    } else {
+                                        alert('Błąd podczas dodawania wydarzenia: ' + response.message);
+                                    }
+                                },
+                                error: function () {
+                                    alert('Wystąpił błąd podczas komunikacji z serwerem.');
+                                }
+                            });
+                        });
+
+                        // Obsługa przycisku "Anuluj"
+                        $('#cancelEventBtn').on('click', function () {
+                            // Ukryj modal
+                            $('#eventModal').modal('hide');
+                            calendar.unselect();
+                        });
+                    },
+
+                    dateClick: function (info) {
+                        // Ustaw datę początkową i końcową na klikniętą datę
+                        $('#startDatePicker').val(info.dateStr);
+                        $('#endDatePicker').val(info.dateStr);
+
+                        // Otwórz modal
+                        $('#eventModal').modal('show');
+                    },
+
+                    eventClick: function (info) {
+                        var deleteConfirmed = confirm('Czy na pewno chcesz usunąć to wydarzenie?');
+                        if (deleteConfirmed) {
+                            $.ajax({
+                                url: '/Calendar/DeleteEvents',
+                                type: 'POST',
+                                dataType: 'json',
+                                data: { ids: [info.event.id] },
+                                success: function (response) {
+                                    if (response.success) {
+                                        // Usuń wydarzenie z kalendarza
+                                        info.event.remove();
+                                    } else {
+                                        alert('Błąd podczas usuwania wydarzenia: ' + response.message);
+                                    }
+                                },
+                                error: function () {
+                                    alert('Wystąpił błąd podczas komunikacji z serwerem.');
+                                }
+                            });
+                        }
+                    }
+                });
+
+                calendar.render();
+            });
+        </script>
+    </head>
+
+    <body>
+        <div id='calendar'></div>
+
+        <!-- Modal do dodawania nowego wydarzenia -->
+        <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="eventModalLabel">Dodaj nowe wydarzenie</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Zamknij">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="eventTitle">Nazwa wydarzenia:</label>
+                            <input type="text" class="form-control" id="eventTitle">
+                        </div>
+                        <div class="form-group">
+                            <label for="startDatePicker">Data rozpoczęcia:</label>
+                            <input type="datetime-local" class="form-control" id="startDatePicker">
+                        </div>
+                        <div class="form-group">
+                            <label for="endDatePicker">Data zakończenia:</label>
+                            <input type="datetime-local" class="form-control" id="endDatePicker">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="saveEventBtn">Zapisz</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelEventBtn">Anuluj</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    </html>
+}
+else if (User.IsInRole("User"))
+{
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Panel użytkownika</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/stylepanel.css" /> <!-- Assuming your style.css is in the wwwroot/css folder -->
+        <style>
+            #calendar {
+                width: 80%;
+                height: 50%;
+                margin: auto;
+                border-radius: 20px;
+                padding: 20px;
+                box-sizing: border-box;
+                color: white;
+            }
+
+        </style>
+
+        <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+        <script src='https://code.jquery.com/jquery-3.6.4.min.js'></script>
+        <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js'></script>
+        <style>
+            #calendar a {
+                color: white !important;
+            }
+
+            .fc-day-today {
+                background: linear-gradient(to top left, #33ccff 0%, #ff99cc 100%);
+            }
+
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark admin-navbar">
+            <a class="logo" href="#">
+                <img src="~/lib/images/logogit.png" alt="logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto navbar">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/">Strona główna</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="GrafikUiA">GRAFIK</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Karnet">ZAKUPY</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Identity/Account/Manage/Index">PROFIL</a>
+                    </li>
+                    <li class="nav-item">
+                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            <button class="button2" type="submit" class=" nav-link btn btn-link text-dark">WYLOGUJ SIĘ</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- Bootstrap JavaScript files -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </body>
+    <head>
+        <meta charset='utf-8' />
+        <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'>
+        <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+        <script src='https://code.jquery.com/jquery-3.6.4.min.js'></script>
+        <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js'></script>
+        <style>
+            #calendar a {
+                color: black !important; /* Ustaw kolor tekstu w linku na czarny */
+            }
+
+            .fc-day-today {
+                background: linear-gradient(to top left, #33ccff 0%, #ff99cc 100%);
+            }
+        </style>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var calendarEl = document.getElementById('calendar');
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    headerToolbar: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    },
+                    eventColor: 'red',
+                    eventTextColor: 'black',
+                    eventBackgroundColor: 'red',
+                    eventBorderColor: 'red',
+                    selectable: true,
+                    events: '/Calendar/GetEvents',
+                    locale: 'pl', // Ustaw lokalizację na polską
+                    eventTimeFormat: {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        omitZeroMinute: false,
+                        meridiem: false
+                    },
+                    select: function (info) {
+                    },
+                    eventClick: function (info) {
+                        console.log('info.event.extendedProps:', info.event.extendedProps);
+                        console.log('info.event.extendedProps.UserId:', info.event.extendedProps.UserId);
+
+                        var isUserSignedUp = info.event.extendedProps && info.event.extendedProps.UserId !== null
+
+                        console.log('isUserSignedUp:', isUserSignedUp);
+
+                        var actionConfirmed = confirm('Czy na pewno chcesz ' + (isUserSignedUp ? 'wypisać się lub zapisać się' : 'zapisać się') + ' na ten trening?');
+
+                        if (actionConfirmed) {
+                            $.ajax({
+                                url: '/Calendar/SignUpOrCancelForEvent',
+                                type: 'POST',
+                                dataType: 'json',
+                                data: { eventId: info.event.id },
+                                success: function (response) {
+                                    if (response.success) {
+                                        // Dodaj dodatkową logikę lub odśwież widok kalendarza
+                                        alert(response.message);
+                                    } else {
+                                        alert('Błąd podczas operacji na treningu: ' + response.message);
+                                    }
+                                },
+                                error: function () {
+                                    alert('Wystąpił błąd podczas komunikacji z serwerem.');
+                                }
+                            });
+                        }
+                    }
+
+                });
+
+                calendar.render();
+            });
+        </script>
+    </head>
+    <body>
+        <div id='calendar'></div>
+    </body>
+    </html>
+}

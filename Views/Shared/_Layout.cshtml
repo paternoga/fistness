@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - FISTNESS</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/stylepanel.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/FISTNESS.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark admin-navbar">
+
+            <img src="~/lib/images/logogit.png" alt="logo">
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto navbar">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Strona główna</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../../../Home/GrafikUiA">GRAFIK</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../../../Home/Karnet">ZAKUPY</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/Identity/Account/Manage/Index">PROFIL</a>
+                </li>
+                <li class="nav-item">
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" asp-antiforgery="true">
+                    <button class="button2" type="submit"class=" nav-link btn btn-link text-dark" >WYLOGUJ SIĘ</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+            @RenderBody()
+    
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

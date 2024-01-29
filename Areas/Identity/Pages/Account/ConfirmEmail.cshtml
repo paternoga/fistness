@@ -1,0 +1,14 @@
+﻿@page
+@model ConfirmEmailModel
+@{
+    ViewData["Title"] = "Email potwierdzony";
+    Layout = null; // This line indicates that this view doesn't use a layout page.
+}
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+<link rel="stylesheet" href="/css/style1.css">
+<h1 style="text-align: center; line-height: 1.5; color: white">@ViewData["Title"]</h1>
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+<div style="text-align: left; line-height: 1.5;">
+    <a href="../Account/Login" class="login">Zaloguj</a>
+</div>

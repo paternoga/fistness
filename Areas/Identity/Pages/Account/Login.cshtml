@@ -1,0 +1,79 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Logowanie";
+    Layout = null; // This line indicates that this view doesn't use a layout page.
+
+}
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/css/style1.css">
+
+<body>
+
+<div class="Container">
+
+    <img class="Transparent-image" src="/lib/images/blur1.png" alt="transparent">
+
+    <div class="text">
+
+        <a href="@Url.Action("Index", "Home")" class="logo">
+        <img src="/lib/images/logo.png" class="logo">
+        </a>
+        <div class="inserts">
+
+
+                    <h2 style="white-space: nowrap;">Zaloguj się </h2>
+                    <section>
+            <form id="account" method="post">
+                    <hr />
+                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                    <div class="form-floating mb-3">
+                        <p>Email: <span asp-validation-for="Input.Email" class="text-danger"></span></p>
+                        <input asp-for="Input.Email" class="Email" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+
+
+
+                    </div>
+                    <div class="form-floating mb-3">
+                        <p>Hasło: <span asp-validation-for="Input.Password" class="text-danger"></span></p>
+                        <input asp-for="Input.Password" class="Password" autocomplete="current-password" aria-required="true" placeholder="password" />
+
+
+
+                    </div>
+                    <div class="checkbox mb-3">
+                        <label asp-for="Input.RememberMe" class="form-label">
+                            <input class="form-check-input" asp-for="Input.RememberMe" />
+                                @Html.DisplayNameFor(m => m.Input.RememberMe)
+                        </label>
+                    </div>
+                    <div>
+                        <button id="login-submit" type="submit" class="login">Zaloguj</button>
+                    </div>
+                        <div style="display: flex; justify-content: center; align-items: center; height: 100px;">
+@*                         <p>
+                            <a id="forgot-password" asp-page="./ForgotPassword" style="white-space: nowrap;">Zapomniałeś hasła?</a>
+                        </p> *@
+                        <p>
+                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Rejestracja</a>
+                        </p>
+                        <p>
+                            
+                        </p>
+                    </div>
+                    </form>
+            </section>
+                    </div>
+
+
+                 </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+@section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+}

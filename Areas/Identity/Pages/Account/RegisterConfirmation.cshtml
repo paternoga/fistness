@@ -1,0 +1,34 @@
+﻿@page
+@model RegisterConfirmationModel
+@{
+    Layout = null; // This line indicates that this view doesn't use a layout page.
+    ViewData["Title"] = "Register confirmation";
+}
+    
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/css/style1.css">
+
+<body>
+    @{
+
+        if (@Model.DisplayConfirmAccountLink)
+        {
+
+            <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+
+                <h1 style="color: red; font-size: 50px">Zweryfikuj email: <a id="confirm-link" href="@Model.EmailConfirmationUrl">Naciśnij tutaj, żeby potwierdzić email</a></h1>
+            </div>
+
+
+        }
+        else
+        {
+            <p style="text-align: center; line-height: 1.5; top: 50%;">
+                Please check your email to confirm your account.
+            </p>
+        }
+
+    }
+</body>
+
